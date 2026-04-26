@@ -20,6 +20,23 @@ const server = http.createServer((req,res) => {
       res.end('not included');
     }
 
-  } else if (){}
+  } else if (req.url === '/api/add-movies' && req.method === 'POST'){
+    let body = '';
+    req.on('data',chunk => {
+      body +=chunk.toString();
+    });
+
+    req.on('end',async () => {
+      const newmovie = JSON.parse(body);
+      const movies = await JSON.parse(fs.readFileSync(filePath));
+      movies.push(newMovie);
+
+      fs.writeFileSync(filePath, JSON.stringify(movies, null, 2));
+
+      res.writeHead(201, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(newMovie)); 
+
+    });
+  }
  
 });
